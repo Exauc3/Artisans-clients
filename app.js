@@ -15,7 +15,7 @@ let selectedArtisanId = null;
 let selectedCategory = '';
 
 // ===============================================
-// 2. LOGIQUE DE NAVIGATION
+// 2. NAVIGATION
 // ===============================================
 
 function navigateTo(screenId) {
@@ -30,7 +30,6 @@ function navigateTo(screenId) {
         targetScreen.classList.add('active');
         targetScreen.setAttribute('aria-hidden', 'false');
 
-        // Si écran profil artisan
         if (screenId === 'artisan-profile') {
             renderArtisanProfile();
         }
@@ -38,19 +37,17 @@ function navigateTo(screenId) {
 }
 
 // ===============================================
-// 3. LOGIQUE D'INTERACTIVITÉ
+// 3. ACTIONS (WhatsApp / Call)
 // ===============================================
 
 function handleAction(actionType, phoneNumber) {
     if (!phoneNumber) return;
-
     let url;
     if (actionType === 'whatsapp') {
         url = `https://wa.me/${phoneNumber.replace(/[\s\(\)-]/g, '')}?text=Bonjour,%20j'ai%20vu%20votre%20profil%20sur%20l'application.`;
     } else if (actionType === 'call') {
         url = `tel:${phoneNumber.replace(/[\s\(\)-]/g, '')}`;
     }
-
     if (url) {
         const target = (window.cordova || window.Cordova) ? '_system' : '_blank';
         window.open(url, target);
@@ -58,13 +55,13 @@ function handleAction(actionType, phoneNumber) {
 }
 
 // ===============================================
-// 4. FILTRAGE ET LISTE DES ARTISANS
+// 4. FILTRAGE DES ARTISANS
 // ===============================================
 
 function selectCategory(category) {
     selectedCategory = category;
-    populateArtisanList();
     navigateTo('artisan-list');
+    populateArtisanList();
 }
 
 function populateArtisanList() {
@@ -72,17 +69,23 @@ function populateArtisanList() {
     const resultsCount = document.querySelector('.results-count');
     if (!container) return;
 
-    const filtered = MOCK_ARTISANS.filter(a => {
-        if (!selectedCategory) return true;
-        return a.job.toLowerCase() === selectedCategory.toLowerCase();
-    });
+    // Si aucune catégorie sélectionnée, ne rien afficher
+    if (!selectedCategory) {
+        container.innerHTML = '<p>Veuillez sélectionner une catégorie pour voir les artisans.</p>';
+        if (resultsCount) resultsCount.textContent = '0 artisan(s) trouvé(s)';
+        return;
+    }
+
+    const filtered = MOCK_ARTISANS.filter(a =>
+        a.job.toLowerCase() === selectedCategory.toLowerCase()
+    );
 
     container.innerHTML = '';
 
     filtered.forEach(artisan => {
         const item = document.createElement('button');
         item.className = 'artisan-list-item';
-        item.setAttribute('type', 'button');
+        item.type = 'button';
         item.dataset.id = artisan.id;
 
         item.innerHTML = `
@@ -155,9 +158,8 @@ function loginArtisan(event) {
 
 document.addEventListener('DOMContentLoaded', () => {
     navigateTo('client-home');
-    populateArtisanList();
 
-    // Boutons catégorie sur l'accueil
+    // Boutons catégorie
     const categoryButtons = document.querySelectorAll('.category-card');
     categoryButtons.forEach(btn => {
         btn.addEventListener('click', () => {
