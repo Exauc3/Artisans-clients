@@ -234,6 +234,65 @@ p {
     font-weight: 500;
 }
 
+/* ==================== FILTER BUTTONS (PILLS) ==================== */
+.filter-section {
+    margin-bottom: 2rem;
+}
+
+.filter-title {
+    font-weight: 500;
+    color: #111827;
+    margin-bottom: 0.75rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.filter-title svg {
+    flex-shrink: 0;
+}
+
+.button-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+}
+
+.filter-btn {
+    background: white;
+    color: #111827;
+    padding: 0.6rem 1.25rem;
+    border-radius: 9999px; /* pill shape */
+    border: 1px solid #E5E7EB;
+    font-size: 0.875rem;
+    font-weight: 500;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all 0.2s;
+}
+
+.filter-btn:hover {
+    background: #F3F4F6;
+}
+
+/* États actifs par catégorie */
+.filter-btn.active-proximity {
+    background: #2563EB; /* bleu */
+    color: white;
+    border-color: #2563EB;
+}
+
+.filter-btn.active-price {
+    background: #059669; /* vert */
+    color: white;
+    border-color: #059669;
+}
+
+.filter-btn.active-rating {
+    background: #F59E0B; /* orange */
+    color: white;
+    border-color: #F59E0B;
+}
 /* ==================== BUTTONS ==================== */
 .btn-primary {
     width: 100%;
