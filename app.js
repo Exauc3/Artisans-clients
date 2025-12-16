@@ -70,6 +70,7 @@ function handleAction(actionType, phoneNumber) {
 
     if (url) {
         console.log(`Ouverture de l'application: ${actionType}`);
+        // Utiliser '_system' si on détecte un environnement mobile (cordova), sinon '_blank'
         const target = (window.cordova || window.Cordova) ? '_system' : '_blank';
         window.open(url, target);
     }
@@ -235,5 +236,5 @@ document.addEventListener('DOMContentLoaded', () => {
         loginForm.addEventListener('submit', loginArtisan);
     }
 
-    // Au cas où certaines actions utilisent encore onclick inline dans le HTML, elles resteront fonctionnelles.
+    // Si certains éléments ont des handlers inline dans le HTML, ils restent fonctionnels.
 });
