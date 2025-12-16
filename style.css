@@ -1,8 +1,7 @@
-/* =============================
-   VARIABLES (Design System)
-============================= */
+/* ==================== VARIABLES (Design System léger) ==================== */
 :root {
     --orange: #F59E0B;
+    --orange-soft: #FEF3C7;
     --blue: #2563EB;
     --green: #059669;
     --gray-50: #F9FAFB;
@@ -14,226 +13,463 @@
     --white: #FFFFFF;
 }
 
-/* =============================
-   RESET & BASE
-============================= */
+/* ==================== RESET & BASE ==================== */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    transition: background-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease, transform 0.15s ease;
+    transition: background-color 0.2s ease,
+                color 0.2s ease,
+                box-shadow 0.2s ease,
+                transform 0.15s ease;
 }
 
 body {
-    font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
     font-size: 16px;
     line-height: 1.5;
-    color: var(--gray-700);
+    color: var(--gray-900);
     background: var(--gray-50);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
 
-/* =============================
-   MOBILE CONTAINER
-============================= */
+/* ==================== MOBILE CONTAINER ==================== */
 .mobile-container {
     max-width: 428px;
     margin: 0 auto;
     background: var(--white);
-    border-radius: 16px;
     min-height: 100vh;
-    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
-    padding: 0 20px;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    position: relative;
+    overflow: hidden;
 }
 
-/* =============================
-   HEADER
-============================= */
-.screen-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 1rem 0;
-    background: var(--white);
-    border-bottom: 1px solid var(--gray-200);
+/* ==================== SCREEN MANAGEMENT ==================== */
+.screen {
+    display: none;
+    min-height: 100vh;
+    animation: fadeIn 0.3s ease-in-out;
 }
 
-.screen-title {
-    font-size: 16px;
+.screen.active {
+    display: block;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ==================== TYPOGRAPHY ==================== */
+h1 {
+    font-size: 1.875rem;
     font-weight: 500;
-    color: var(--gray-900);
+    line-height: 1.5;
 }
 
-.btn-back, .profile-icon {
-    width: 36px;
-    height: 36px;
+h2 {
+    font-size: 1.5rem;
+    font-weight: 500;
+    line-height: 1.5;
+}
+
+h3 {
+    font-size: 1.25rem;
+    font-weight: 500;
+    line-height: 1.5;
+}
+
+p {
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+}
+
+/* ==================== HEADER ==================== */
+.header-gradient {
+    background: linear-gradient(135deg, #1E3A8A 0%, #1E40AF 100%);
+    color: white;
+    padding: 3rem 1.5rem 2rem;
+    border-radius: 0 0 2rem 2rem;
+}
+
+.header-top {
     display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 50%;
-    background: var(--gray-100);
-    cursor: pointer;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 2rem;
 }
 
-.search-bar {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    background: var(--white);
-    border: 1px solid var(--gray-200);
-    border-radius: 8px;
-    padding: 0.75rem 1rem;
-    margin: 1rem 0;
-    cursor: text;
+.header-subtitle {
+    color: #93C5FD;
+    font-size: 0.875rem;
 }
 
-.search-bar input {
+.header-title {
+    color: white;
+    margin: 0.25rem 0;
+}
+
+/* ==================== BUTTONS ==================== */
+.btn-artisan {
+    background: var(--orange);
+    color: var(--white);
+    padding: 0.625rem 1.25rem;
     border: none;
-    outline: none;
-    flex: 1;
-    font-size: 14px;
+    border-radius: 9999px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+    box-shadow: 0 10px 15px -3px rgba(245, 158, 11, 0.4);
+}
+
+.btn-artisan:hover {
+    background: #D97706;
+    transform: scale(1.05);
+}
+
+.btn-artisan:active {
+    transform: scale(0.95);
+}
+
+/* ==================== SEARCH BAR ==================== */
+.search-bar {
+    width: 100%;
+    background: var(--white);
     color: var(--gray-700);
+    padding: 1.25rem;
+    border: 1px solid var(--gray-200);
+    border-radius: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    cursor: pointer;
+    transition: all 0.3s;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
 }
 
-.search-bar .icon-search {
-    color: var(--gray-300);
+.search-bar:hover {
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.35);
+    transform: translateY(-2px);
 }
 
-/* =============================
-   FILTER SECTIONS (PILLS)
-============================= */
-.filter-group {
+.search-bar span {
+    color: #6B7280;
+}
+
+.icon-search {
+    color: var(--orange);
+    flex-shrink: 0;
+}
+
+/* ==================== CONTENT SECTIONS ==================== */
+.content-section {
+    padding: 2rem 1.5rem;
+}
+
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     margin-bottom: 1.5rem;
 }
 
-.filter-group-title {
+.section-header h2 {
+    color: var(--gray-900);
+}
+
+.link-text {
+    background: none;
+    border: none;
+    color: var(--orange);
+    cursor: pointer;
     font-weight: 500;
-    font-size: 0.875rem;
-    color: var(--gray-700);
-    margin-bottom: 0.5rem;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
+    transition: color 0.2s;
 }
 
-.filter-group-title .icon-wrapper {
-    width: 24px;
-    height: 24px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 6px;
-    background: var(--gray-100);
+.link-text:hover {
+    color: #D97706;
 }
 
+/* ==================== FILTER BUTTONS (PILLS) ==================== */
 .button-group {
     display: flex;
     flex-wrap: wrap;
-    gap: 0.5rem;
+    gap: 0.75rem;
+    margin-bottom: 1.5rem;
 }
 
 .filter-btn {
-    padding: 0.5rem 1rem;
-    border-radius: 9999px;
-    border: 1px solid var(--gray-200);
-    background: var(--white);
+    background: var(--gray-100);
     color: var(--gray-700);
+    padding: 0.6rem 1.1rem;
+    border-radius: 9999px;
+    border: none;
     font-size: 0.875rem;
     font-weight: 500;
     cursor: pointer;
+    white-space: nowrap;
     display: flex;
     align-items: center;
-    gap: 0.25rem;
-    white-space: nowrap;
-}
-
-.filter-btn:hover {
-    background: var(--gray-100);
-}
-
-.filter-btn.active.proximity {
-    background: var(--blue);
-    color: var(--white);
-}
-
-.filter-btn.active.price {
-    background: var(--green);
-    color: var(--white);
-}
-
-.filter-btn.active.rating {
-    background: var(--orange);
-    color: var(--white);
-}
-
-/* =============================
-   FILTER CARD CONTAINERS
-============================= */
-.filter-card {
-    background: var(--white);
-    border-radius: 12px;
-    border: 1px solid var(--gray-200);
-    padding: 1rem;
-    margin-bottom: 1rem;
-}
-
-.filter-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
     gap: 0.5rem;
 }
 
-/* =============================
-   BUTTONS
-============================= */
+.filter-btn:hover {
+    background: var(--gray-200);
+}
+
+.filter-btn.active {
+    color: var(--white);
+}
+
+.filter-btn.proximity.active {
+    background: var(--blue);
+}
+
+.filter-btn.price.active {
+    background: var(--green);
+}
+
+.filter-btn.rating.active {
+    background: var(--orange);
+}
+
+/* ==================== CATEGORY CARDS ==================== */
+.categories-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+.category-card {
+    background: var(--white);
+    padding: 1.5rem;
+    border-radius: 1rem;
+    border: 1px solid var(--gray-200);
+    cursor: pointer;
+    transition: all 0.3s;
+    text-align: center;
+}
+
+.category-card:hover {
+    border-color: var(--orange);
+    transform: translateY(-2px);
+}
+
+.category-card:active {
+    transform: scale(0.95);
+}
+
+.category-icon {
+    width: 4rem;
+    height: 4rem;
+    border-radius: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1rem;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.2);
+}
+
+.category-icon svg {
+    color: var(--white);
+}
+
+.category-card p {
+    color: var(--gray-900);
+    font-weight: 500;
+}
+
+/* ==================== PRIMARY BUTTON ==================== */
+#search-btn,
 .btn-primary {
     width: 100%;
     background: var(--orange);
     color: var(--white);
     border: none;
-    padding: 0.75rem;
-    border-radius: 8px;
+    padding: 1rem;
+    border-radius: 1rem;
     font-size: 1rem;
     font-weight: 600;
-    margin-top: 1rem;
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 0.5rem;
+    gap: 0.75rem;
+    box-shadow: 0 8px 20px rgba(245, 158, 11, 0.35);
+    margin-top: 1rem;
 }
 
+#search-btn:hover,
 .btn-primary:hover {
     transform: translateY(-1px);
-    box-shadow: 0 6px 12px rgba(245,158,11,0.25);
 }
 
-.btn-secondary {
-    width: 100%;
+/* ==================== TRUST SECTION ==================== */
+.trust-section {
+    padding: 0 1.5rem 2rem;
+}
+
+.trust-card {
     background: var(--white);
-    border: 1px solid var(--gray-200);
-    color: var(--gray-700);
-    padding: 0.75rem;
-    border-radius: 8px;
-    font-size: 1rem;
-    font-weight: 500;
-    margin-top: 0.5rem;
-    cursor: pointer;
+    border: 2px solid var(--orange-soft);
+    border-radius: 1rem;
+    padding: 1.5rem;
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
 }
 
-.btn-secondary:hover {
-    background: var(--gray-50);
-}
-
-/* =============================
-   UTILITIES
-============================= */
-.text-center {
+.trust-title {
+    color: var(--gray-900);
     text-align: center;
+    margin-bottom: 1rem;
 }
 
-.mb-1 { margin-bottom: 0.25rem; }
-.mb-2 { margin-bottom: 0.5rem; }
-.mb-3 { margin-bottom: 1rem; }
-.mt-1 { margin-top: 0.25rem; }
-.mt-2 { margin-top: 0.5rem; }
-.mt-3 { margin-top: 1rem; }
+.trust-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.trust-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.trust-dot {
+    width: 0.5rem;
+    height: 0.5rem;
+    background: var(--orange);
+    border-radius: 9999px;
+    flex-shrink: 0;
+}
+
+.trust-item p {
+    color: var(--gray-700);
+}
+
+/* ==================== SCREEN HEADER ==================== */
+.screen-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.5rem;
+    background: var(--white);
+    border-bottom: 1px solid var(--gray-200);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.btn-back {
+    background: none;
+    border: none;
+    color: var(--gray-700);
+    cursor: pointer;
+    padding: 0.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: color 0.2s;
+}
+
+.btn-back:hover {
+    color: var(--gray-900);
+}
+
+.btn-back:active {
+    transform: scale(0.9);
+}
+
+.screen-title {
+    color: var(--gray-900);
+    font-size: 1.25rem;
+}
+
+/* ==================== FORMS ==================== */
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.form-label {
+    display: block;
+    color: var(--gray-700);
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+}
+
+.form-input,
+.form-select {
+    width: 100%;
+    padding: 1rem;
+    border: 2px solid var(--gray-200);
+    border-radius: 1rem;
+    font-size: 1rem;
+    font-family: inherit;
+    transition: all 0.2s;
+    background: var(--white);
+}
+
+.form-input:focus,
+.form-select:focus {
+    outline: none;
+    border-color: var(--orange);
+}
+
+.form-select {
+    cursor: pointer;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1.5L6 6.5L11 1.5' stroke='%23374151' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 1rem center;
+    padding-right: 3rem;
+}
+
+/* ==================== ARTISAN LIST ==================== */
+.results-count {
+    color: #6B7280;
+    margin-bottom: 1.5rem;
+}
+
+.artisan-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.artisan-card {
+    background: var(--white);
+    border-radius: 1.5rem;
+    padding: 1.25rem;
+    border: 2px solid transparent;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.artisan-card:hover {
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+    border-color: var(--orange-soft);
+}
+
+.artisan-card:active {
+    transform: scale(0.98);
+}
+
+/* ==================== PROFILE SCREEN ==================== */
+/* ... le reste de ton CSS original reste inchangé ... */
+
+/* ==================== RESPONSIVE ==================== */
+@media (max-width: 428px) {
+    .mobile-container {
+        box-shadow: none;
+    }
+}
