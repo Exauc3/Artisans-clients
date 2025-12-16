@@ -141,31 +141,84 @@
         </div>
 
         <!-- SEARCH/FILTER SCREEN -->
-        <div id="search-filter" class="screen">
-            <div class="screen-header">
-                <button class="btn-back" onclick="navigateTo('client-home')" aria-label="Retour">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M15 18l-6-6 6-6"></path>
-                    </svg>
-                </button>
-                <h2 class="screen-title">Rechercher un artisan</h2>
-                <div style="width: 24px;"></div>
-            </div>
+<div id="search-filter" class="screen">
+    <div class="screen-header">
+        <button class="btn-back" onclick="navigateTo('client-home')" aria-label="Retour">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M15 18l-6-6 6-6"></path>
+            </svg>
+        </button>
+        <h2 class="screen-title">Rechercher un artisan</h2>
+        <div style="width: 24px;"></div>
+    </div>
 
-            <div class="content-section">
-                <!-- Category Selection -->
-                <div class="form-group">
-                    <label class="form-label" for="category-select">Catégorie</label>
-                    <select id="category-select" name="category" class="form-select">
-                        <option value="">Toutes les catégories</option>
-                        <option value="Électricien">Électricien</option>
-                        <option value="Plombier">Plombier</option>
-                        <option value="Menuisier">Menuisier</option>
-                        <option value="Mécanicien">Mécanicien</option>
-                        <option value="Peintre">Peintre</option>
-                        <option value="Maçon">Maçon</option>
-                    </select>
-                </div>
+    <div class="content-section">
+        <!-- Category Selection -->
+        <div class="form-group">
+            <label class="form-label">Catégorie</label>
+            <div class="button-group" id="category-buttons">
+                <button type="button" class="filter-btn" data-value="">Toutes les catégories</button>
+                <button type="button" class="filter-btn" data-value="Électricien">Électricien</button>
+                <button type="button" class="filter-btn" data-value="Plombier">Plombier</button>
+                <button type="button" class="filter-btn" data-value="Menuisier">Menuisier</button>
+                <button type="button" class="filter-btn" data-value="Mécanicien">Mécanicien</button>
+                <button type="button" class="filter-btn" data-value="Peintre">Peintre</button>
+                <button type="button" class="filter-btn" data-value="Maçon">Maçon</button>
+            </div>
+        </div>
+
+        <!-- Distance Filter -->
+        <div class="form-group">
+            <label class="form-label">Distance maximale</label>
+            <div class="button-group" id="distance-buttons">
+                <button type="button" class="filter-btn" data-value="">Toutes les distances</button>
+                <button type="button" class="filter-btn" data-value="2">Moins de 2 km</button>
+                <button type="button" class="filter-btn" data-value="5">Moins de 5 km</button>
+                <button type="button" class="filter-btn" data-value="10">Moins de 10 km</button>
+            </div>
+        </div>
+
+        <!-- Price Range -->
+        <div class="form-group">
+            <label class="form-label">Gamme de prix</label>
+            <div class="button-group" id="price-buttons">
+                <button type="button" class="filter-btn" data-value="">Tous les prix</button>
+                <button type="button" class="filter-btn" data-value="budget">Budget ($ - $$)</button>
+                <button type="button" class="filter-btn" data-value="moyen">Moyen ($$ - $$$)</button>
+                <button type="button" class="filter-btn" data-value="premium">Premium ($$$ - $$$$)</button>
+            </div>
+        </div>
+
+        <!-- Rating Filter -->
+        <div class="form-group">
+            <label class="form-label">Note minimale</label>
+            <div class="button-group" id="rating-buttons">
+                <button type="button" class="filter-btn" data-value="0">Toutes les notes</button>
+                <button type="button" class="filter-btn" data-value="3">3+ étoiles</button>
+                <button type="button" class="filter-btn" data-value="4">4+ étoiles</button>
+                <button type="button" class="filter-btn" data-value="4.5">4.5+ étoiles</button>
+            </div>
+        </div>
+
+        <!-- Availability -->
+        <div class="form-group">
+            <label class="form-label">Disponibilité</label>
+            <div class="button-group" id="availability-buttons">
+                <button type="button" class="filter-btn" data-value="">Tous</button>
+                <button type="button" class="filter-btn" data-value="Disponible">Disponible maintenant</button>
+                <button type="button" class="filter-btn" data-value="Occupé">Inclure occupés</button>
+            </div>
+        </div>
+
+        <button class="btn-primary" id="search-btn">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                <circle cx="11" cy="11" r="8"></circle>
+                <path d="M21 21l-4.35-4.35"></path>
+            </svg>
+            <span>Rechercher</span>
+        </button>
+    </div>
+</div>
 
                 <!-- Distance Filter -->
                 <div class="form-group">
