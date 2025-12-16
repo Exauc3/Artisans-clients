@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ArtisanConnect - Lubumbashi</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Mobile Container -->
+    <div class="mobile-container">
+        <!-- CLIENT HOME SCREEN -->
+        <div id="client-home" class="screen active">
+            <!-- Header -->
+            <div class="header-gradient">
+                <div class="header-top">
+                    <div>
+                        <p class="header-subtitle">Bienvenue à</p>
+                        <h1 class="header-title">ArtisanConnect</h1>
+                        <p class="header-subtitle">Lubumbashi</p>
+                    </div>
+                    <button class="btn-artisan" onclick="navigateTo('artisan-login')" aria-label="Espace artisan">
+                        Artisan
+                    </button>
+                </div>
+                
+                <!-- Search Bar -->
+                <button class="search-bar" onclick="navigateTo('search-filter')" aria-label="Rechercher un artisan">
+                    <svg class="icon-search" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                        <circle cx="11" cy="11" r="8"></circle>
+                        <path d="M21 21l-4.35-4.35"></path>
+                    </svg>
+                    <span>Trouver un artisan...</span>
+                </button>
+            </div>
+
+            <!-- Categories Section -->
+            <div class="content-section">
+                <div class="section-header">
+                    <h2>Catégories</h2>
+                    <button class="link-text">Voir tout</button>
+                </div>
+                
+                <div class="categories-grid">
+                    <button class="category-card" onclick="selectCategory('Électricien')">
+                        <div class="category-icon bg-amber" aria-hidden="true">
+                            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
+                            </svg>
+                        </div>
+                        <p>Électricien</p>
+                    </button>
+
+                    <button class="category-card" onclick="selectCategory('Plombier')">
+                        <div class="category-icon bg-blue" aria-hidden="true">
+                            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M7 19a2 2 0 0 1 2 2h6a2 2 0 0 1 2-2V5a2 2 0 0 1-2-2H9a2 2 0 0 1-2 2v14z"></path>
+                            </svg>
+                        </div>
+                        <p>Plombier</p>
+                    </button>
+
+                    <button class="category-card" onclick="selectCategory('Menuisier')">
+                        <div class="category-icon bg-orange" aria-hidden="true">
+                            <!-- Remplacé le SVG tronqué par un pictogramme valide -->
+                            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M3 21v-3.5l11-11L20.5 9 9.5 20H3z"></path>
+                                <path d="M14 7l3 3"></path>
+                            </svg>
+                        </div>
+                        <p>Menuisier</p>
+                    </button>
+
+                    <button class="category-card" onclick="selectCategory('Mécanicien')">
+                        <div class="category-icon bg-gray" aria-hidden="true">
+                            <!-- SVG mécanicien simple -->
+                            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="12" cy="12" r="3"></circle>
+                                <path d="M19.4 15a7.96 7.96 0 0 0 0-6"></path>
+                                <path d="M4.6 9a7.96 7.96 0 0 0 0 6"></path>
+                                <circle cx="7" cy="17" r="2"></circle>
+                                <circle cx="17" cy="17" r="2"></circle>
+                            </svg>
+                        </div>
+                        <p>Mécanicien</p>
+                    </button>
+
+                    <button class="category-card" onclick="selectCategory('Peintre')">
+                        <div class="category-icon bg-purple" aria-hidden="true">
+                            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M18.4 2.6L14 7l-1.6-1.6a2 2 0 0 0-2.8 0L8 7l9 9 1.6-1.6a2 2 0 0 0 0-2.8L17 10l4.4-4.4a2.12 2.12 0 1 0-3-3z"></path>
+                            </svg>
+                        </div>
+                        <p>Peintre</p>
+                    </button>
+
+                    <button class="category-card" onclick="selectCategory('Maçon')">
+                        <div class="category-icon bg-red" aria-hidden="true">
+                            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M22 12h-4l-3 9L9 3l-3 9H2"></path>
+                            </svg>
+                        </div>
+                        <p>Maçon</p>
+                    </button>
+                </div>
+
+                <!-- Quick CTA -->
+                <button class="btn-primary" onclick="navigateTo('search-filter')">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                        <circle cx="11" cy="11" r="8"></circle>
+                        <path d="M21 21l-4.35-4.35"></path>
+                    </svg>
+                    <span>Trouver un artisan maintenant</span>
+                </button>
+            </div>
+
+            <!-- Trust Indicators -->
+            <div class="trust-section">
+                <div class="trust-card">
+                    <h3 class="trust-title">Pourquoi nous choisir ?</h3>
+                    <div class="trust-list">
+                        <div class="trust-item">
+                            <div class="trust-dot" aria-hidden="true"></div>
+                            <p>Artisans vérifiés et qualifiés</p>
+                        </div>
+                        <div class="trust-item">
+                            <div class="trust-dot" aria-hidden="true"></div>
+                            <p>Contact direct par WhatsApp</p>
+                        </div>
+                        <div class="trust-item">
+                            <div class="trust-dot" aria-hidden="true"></div>
+                            <p>Avis clients authentiques</p>
+                        </div>
+                        <div class="trust-item">
+                            <div class="trust-dot" aria-hidden="true"></div>
+                            <p>Rapide et fiable</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SEARCH/FILTER SCREEN -->
+        <div id="search-filter" class="screen">
+            <div class="screen-header">
+                <button class="btn-back" onclick="navigateTo('client-home')" aria-label="Retour">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M15 18l-6-6 6-6"></path>
+                    </svg>
+                </button>
+                <h2 class="screen-title">Rechercher un artisan</h2>
+                <div style="width: 24px;"></div>
+            </div>
+
+            <div class="content-section">
+                <!-- Category Selection -->
+                <div class="form-group">
+                    <label class="form-label" for="category-select">Catégorie</label>
+                    <select id="category-select" name="category" class="form-select">
+                        <option value="">Toutes les catégories</option>
+                        <option value="Électricien">Électricien</option>
+                        <option value="Plombier">Plombier</option>
+                        <option value="Menuisier">Menuisier</option>
+                        <option value="Mécanicien">Mécanicien</option>
+                        <option value="Peintre">Peintre</option>
+                        <option value="Maçon">Maçon</option>
+                    </select>
+                </div>
+
+                <!-- Distance Filter -->
+                <div class="form-group">
+                    <label class="form-label">Distance maximale</label>
+                    <select class="form-select" name="distance">
+                        <option value="">Toutes les distances</option>
+                        <option value="2">Moins de 2 km</option>
+                        <option value="5">Moins de 5 km</option>
+                        <option value="10">Moins de 10 km</option>
+                    </select>
+                </div>
+
+                <!-- Price Range -->
+                <div class="form-group">
+                    <label class="form-label">Gamme de prix</label>
+                    <select class="form-select" name="price">
+                        <option value="">Tous les prix</option>
+                        <option value="budget">Budget ($ - $$)</option>
+                        <option value="moyen">Moyen ($$-$$$)</option>
+                        <option value="premium">Premium ($$$-$$$$)</option>
+                    </select>
+                </div>
+
+                <!-- Rating Filter -->
+                <div class="form-group">
+                    <label class="form-label">Note minimale</label>
+                    <select class="form-select" name="rating">
+                        <option value="0">Toutes les notes</option>
+                        <option value="3">3+ étoiles</option>
+                        <option value="4">4+ étoiles</option>
+                        <option value="4.5">4.5+ étoiles</option>
+                    </select>
+                </div>
+
+                <!-- Availability -->
+                <div class="form-group">
+                    <label class="form-label">Disponibilité</label>
+                    <select class="form-select" name="availability">
+                        <option value="">Tous</option>
+                        <option value="Disponible">Disponible maintenant</option>
+                        <option value="Occupé">Inclure occupés</option>
+                    </select>
+                </div>
+
+                <button class="btn-primary" onclick="navigateTo('artisan-list')">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                        <circle cx="11" cy="11" r="8"></circle>
+                        <path d="M21 21l-4.35-4.35"></path>
+                    </svg>
+                    <span>Rechercher</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- ARTISAN LIST SCREEN -->
+        <div id="artisan-list" class="screen">
+            <div class="screen-header">
+                <button class="btn-back" onclick="navigateTo('search-filter')" aria-label="Retour">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M15 18l-6-6 6-6"></path>
+                    </svg>
+                </button>
+                <h2 class="screen-title">Artisans disponibles</h2>
+                <div style="width: 24px;"></div>
+            </div>
+
+            <div class="content-section">
+                <p class="results-count">12 artisans trouvés</p>
+                
+                <div id="artisan-list-container" class="artisan-list">
+                    <!-- Les artisans seront insérés ici par JavaScript -->
+                </div>
+            </div>
+        </div>
+
+        <!-- ARTISAN PROFILE SCREEN -->
+        <div id="artisan-profile" class="screen">
+            <div class="screen-header">
+                <button class="btn-back" onclick="navigateTo('artisan-list')" aria-label="Retour">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M15 18l-6-6 6-6"></path>
+                    </svg>
+                </button>
+                <h2 class="screen-title">Profil</h2>
+                <div style="width: 24px;"></div>
+            </div>
+
+            <div id="artisan-profile-content" class="content-section">
+                <!-- Le contenu sera inséré par JavaScript -->
+            </div>
+        </div>
+
+        <!-- ARTISAN LOGIN SCREEN -->
+        <div id="artisan-login" class="screen">
+            <div class="screen-header">
+                <button class="btn-back" onclick="navigateTo('client-home')" aria-label="Retour">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M15 18l-6-6 6-6"></path>
+                    </svg>
+                </button>
+                <h2 class="screen-title">Connexion Artisan</h2>
+                <div style="width: 24px;"></div>
+            </div>
+
+            <div class="content-section">
+                <div class="login-icon">
+                    <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                        <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path>
+                        <circle cx="12" cy="7" r="4"></circle>
+                    </svg>
+                </div>
+
+                <h3 class="login-title">Espace Artisan</h3>
+                <p class="login-subtitle">Connectez-vous pour gérer votre profil et vos demandes</p>
+
+                <form onsubmit="loginArtisan(event)">
+                    <div class="form-group">
+                        <label class="form-label" for="phone">Numéro de téléphone</label>
+                        <input id="phone" name="phone" type="tel" class="form-input" placeholder="+243 XXX XXX XXX" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="pin">Code PIN</label>
+                        <input id="pin" name="pin" type="password" class="form-input" placeholder="••••" maxlength="4" required>
+                    </div>
+
+                    <button type="submit" class="btn-primary">
+                        Se connecter
+                    </button>
+                </form>
+
+                <div class="login-help">
+                    <p>Nouveau sur ArtisanConnect ?</p>
+                    <button class="link-text">Créer un compte artisan</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- ARTISAN DASHBOARD -->
+        <div id="artisan-dashboard" class="screen">
+            <div class="header-gradient">
+                <div class="dashboard-header">
+                    <div>
+                        <p class="header-subtitle">Bienvenue</p>
+                        <h1 class="header-title">Patrick Mukendi</h1>
+                        <p class="header-subtitle">Électricien</p>
+                    </div>
+                    <button class="btn-logout" onclick="navigateTo('client-home')" aria-label="Se déconnecter">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                            <polyline points="16 17 21 12 16 7"></polyline>
+                            <line x1="21" y1="12" x2="9" y2="12"></line>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+            <div class="content-section">
+                <!-- Stats Cards -->
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon bg-green" aria-hidden="true">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
+                                <circle cx="9" cy="7" r="4"></circle>
+                            </svg>
+                        </div>
+                        <p class="stat-value">8</p>
+                        <p class="stat-label">Nouvelles demandes</p>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-icon bg-blue" aria-hidden="true">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                            </svg>
+                        </div>
+                        <p class="stat-value">4.8</p>
+                        <p class="stat-label">Note moyenne</p>
+                    </div>
+                </div>
+
+                <!-- Quick Actions -->
+                <div class="action-cards">
+                    <button class="action-card" onclick="navigateTo('client-requests')">
+                        <div class="action-icon" aria-hidden="true">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                            </svg>
+                        </div>
+                        <div class="action-content">
+                            <h3>Demandes clients</h3>
+                            <p>Gérer vos demandes en attente</p>
+                        </div>
+                        <div class="notification-badge">8</div>
+                    </button>
+
+                    <button class="action-card" onclick="navigateTo('profile-management')">
+                        <div class="action-icon" aria-hidden="true">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path>
+                                <circle cx="12" cy="7" r="4"></circle>
+                            </svg>
+                        </div>
+                        <div class="action-content">
+                            <h3>Mon profil</h3>
+                            <p>Modifier mes informations</p>
+                        </div>
+                    </button>
+
+                    <button class="action-card" onclick="navigateTo('availability')">
+                        <div class="action-icon" aria-hidden="true">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <polyline points="12 6 12 12 16 14"></polyline>
+                            </svg>
+                        </div>
+                        <div class="action-content">
+                            <h3>Disponibilité</h3>
+                            <p>Gérer mon statut</p>
+                        </div>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
