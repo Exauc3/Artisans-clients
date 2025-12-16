@@ -1,44 +1,5 @@
 /* =========================
-   NAVIGATION ENTRE ÉCRANS
-   ========================= */
-
-function navigateTo(screenId) {
-  const screens = document.querySelectorAll('.screen');
-  if (!screens.length) return;
-
-  let found = false;
-
-  screens.forEach(screen => {
-    const isActive = screen.id === screenId;
-    screen.classList.toggle('active', isActive);
-    screen.setAttribute('aria-hidden', isActive ? 'false' : 'true');
-    if (isActive) found = true;
-  });
-
-  // Sécurité : si l'écran n'existe pas, on affiche l'accueil client
-  if (!found) {
-    const fallback = document.getElementById('client-home');
-    if (fallback) {
-      fallback.classList.add('active');
-      fallback.setAttribute('aria-hidden', 'false');
-    }
-  }
-}
-
-/* =========================
-   CATÉGORIES (HOME)
-   ========================= */
-
-function selectCategory(category) {
-  const select = document.getElementById('category-select');
-  if (select) {
-    select.value = category;
-  }
-  navigateTo('search-filter');
-}
-
-/* =========================
-   DONNÉES MOCKÉES
+   DONNÉES (MOCK)
    ========================= */
 
 const ARTISANS = [
@@ -75,7 +36,46 @@ const ARTISANS = [
 ];
 
 /* =========================
-   RECHERCHE & LISTE
+   NAVIGATION SIMPLE (RARE)
+   ========================= */
+
+function navigateTo(screenId) {
+  const screens = document.querySelectorAll('.screen');
+  if (!screens.length) return;
+
+  screens.forEach(screen => {
+    const isActive = screen.id === screenId;
+    screen.classList.toggle('active', isActive);
+    screen.setAttribute('aria-hidden', isActive ? 'false' : 'true');
+  });
+}
+
+/* =========================
+   SÉLECTION DE CATÉGORIE
+   ========================= */
+/*
+  ⚠️ IMPORTANT :
+  - PAS de navigateTo ici
+  - On reste sur le même écran
+  - On met à jour le contenu
+*/
+
+function selectCategory(category) {
+  const select = document.getElementById('category-select');
+  if (select) {
+    select.value = category;
+  }
+
+  renderArtisanList();
+
+  const resultsSection = document.getElementById('artisan-list');
+  if (resultsSection) {
+    resultsSection.scrollIntoView({ behavior: 'smooth' });
+  }
+}
+
+/* =========================
+   RENDU LISTE ARTISANS
    ========================= */
 
 function renderArtisanList() {
@@ -84,19 +84,21 @@ function renderArtisanList() {
 
   container.innerHTML = '';
 
-  const category = document.getElementById('category-select')?.value || '';
+  const selectedCategory =
+    document.getElementById('category-select')?.value || '';
 
-  const results = ARTISANS.filter(a =>
-    !category || a.job === category
+  const results = ARTISANS.filter(artisan =>
+    !selectedCategory || artisan.job === selectedCategory
   );
 
-  document.querySelector('.results-count').textContent =
-    `${results.length} artisans trouvés`;
+  const count = document.querySelector('.results-count');
+  if (count) {
+    count.textContent = `${results.length} artisans trouvés`;
+  }
 
   results.forEach(artisan => {
     const card = document.createElement('div');
     card.className = 'artisan-card';
-    card.onclick = () => openArtisanProfile(artisan.id);
 
     card.innerHTML = `
       <div class="artisan-info">
@@ -104,40 +106,23 @@ function renderArtisanList() {
         <p>${artisan.job}</p>
         <div class="artisan-rating">⭐ ${artisan.rating}</div>
       </div>
-      <div class="artisan-status ${artisan.availability === 'Disponible' ? 'available' : 'busy'}">
+
+      <div class="artisan-status ${
+        artisan.availability === 'Disponible' ? 'available' : 'busy'
+      }">
         ${artisan.availability}
+      </div>
+
+      <div class="artisan-contact">
+        <a href="tel:${artisan.phone}" class="btn-primary">Appeler</a>
+        <a href="https://wa.me/${artisan.whatsapp}" class="btn-secondary">
+          WhatsApp
+        </a>
       </div>
     `;
 
     container.appendChild(card);
   });
-
-  navigateTo('artisan-list');
-}
-
-/* =========================
-   PROFIL ARTISAN
-   ========================= */
-
-function openArtisanProfile(id) {
-  const artisan = ARTISANS.find(a => a.id === id);
-  if (!artisan) return;
-
-  const container = document.getElementById('artisan-profile-content');
-  if (!container) return;
-
-  container.innerHTML = `
-    <h3>${artisan.name}</h3>
-    <p class="profile-job">${artisan.job}</p>
-    <p class="profile-rating">⭐ ${artisan.rating}</p>
-
-    <div class="profile-actions">
-      <a href="tel:${artisan.phone}" class="btn-primary">Appeler</a>
-      <a href="https://wa.me/${artisan.whatsapp}" class="btn-secondary">WhatsApp</a>
-    </div>
-  `;
-
-  navigateTo('artisan-profile');
 }
 
 /* =========================
@@ -155,8 +140,8 @@ function loginArtisan(event) {
 
 document.addEventListener('DOMContentLoaded', () => {
   navigateTo('client-home');
+  renderArtisanList();
 
-  // Bouton rechercher (écran filtres)
   const searchBtn = document.querySelector(
     '#search-filter .btn-primary'
   );
