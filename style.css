@@ -95,7 +95,7 @@ p {
 /* ==================== HEADER ==================== */
 .header-gradient {
     background: linear-gradient(135deg, #1E3A8A 0%, #1E40AF 100%);
-    color: white;
+    color: var(--white);
     padding: 3rem 1.5rem 2rem;
     border-radius: 0 0 2rem 2rem;
 }
@@ -113,11 +113,10 @@ p {
 }
 
 .header-title {
-    color: white;
+    color: var(--white);
     margin: 0.25rem 0;
 }
 
-/* ==================== BUTTONS ==================== */
 .btn-artisan {
     background: var(--orange);
     color: var(--white);
@@ -145,7 +144,7 @@ p {
     background: var(--white);
     color: var(--gray-700);
     padding: 1.25rem;
-    border: 1px solid var(--gray-200);
+    border: none;
     border-radius: 1rem;
     display: flex;
     align-items: center;
@@ -169,36 +168,7 @@ p {
     flex-shrink: 0;
 }
 
-/* ==================== CONTENT SECTIONS ==================== */
-.content-section {
-    padding: 2rem 1.5rem;
-}
-
-.section-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 1.5rem;
-}
-
-.section-header h2 {
-    color: var(--gray-900);
-}
-
-.link-text {
-    background: none;
-    border: none;
-    color: var(--orange);
-    cursor: pointer;
-    font-weight: 500;
-    transition: color 0.2s;
-}
-
-.link-text:hover {
-    color: #D97706;
-}
-
-/* ==================== FILTER BUTTONS (PILLS) ==================== */
+/* ==================== FILTER PILLS ==================== */
 .button-group {
     display: flex;
     flex-wrap: wrap;
@@ -216,9 +186,6 @@ p {
     font-weight: 500;
     cursor: pointer;
     white-space: nowrap;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
 }
 
 .filter-btn:hover {
@@ -226,22 +193,80 @@ p {
 }
 
 .filter-btn.active {
-    color: var(--white);
-}
-
-.filter-btn.proximity.active {
-    background: var(--blue);
-}
-
-.filter-btn.price.active {
-    background: var(--green);
-}
-
-.filter-btn.rating.active {
     background: var(--orange);
+    color: var(--white);
+    box-shadow: 0 4px 10px rgba(245, 158, 11, 0.35);
 }
 
-/* ==================== CATEGORY CARDS ==================== */
+/* ==================== FILTER CARDS ==================== */
+.filter-card {
+    background: var(--white);
+    border-radius: 12px;
+    padding: 1rem;
+    border: 1px solid var(--gray-200);
+    margin-bottom: 1rem;
+}
+
+.filter-card-title {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-weight: 500;
+    color: var(--gray-900);
+    margin-bottom: 0.5rem;
+}
+
+.filter-card-title .icon-wrapper {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.filter-proximity .filter-btn.active { background: var(--blue); }
+.filter-price .filter-btn.active { background: var(--green); }
+.filter-rating .filter-btn.active { background: var(--orange); }
+
+/* ==================== BUTTONS ==================== */
+#search-btn,
+.btn-primary {
+    width: 100%;
+    background: var(--orange);
+    color: var(--white);
+    border: none;
+    padding: 1rem;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 2rem;
+    box-shadow: 0 8px 20px rgba(245, 158, 11, 0.35);
+}
+
+#search-btn:hover,
+.btn-primary:hover {
+    transform: translateY(-1px);
+}
+
+.btn-secondary {
+    width: 100%;
+    background: var(--white);
+    border: 1px solid var(--gray-200);
+    color: var(--gray-700);
+    padding: 1rem;
+    border-radius: 8px;
+    font-weight: 500;
+    cursor: pointer;
+    margin-top: 0.5rem;
+}
+
+.btn-secondary:hover {
+    background: var(--gray-50);
+}
+
+/* ==================== CATEGORY GRID ==================== */
 .categories-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
@@ -251,221 +276,25 @@ p {
 
 .category-card {
     background: var(--white);
-    padding: 1.5rem;
+    padding: 1rem;
     border-radius: 1rem;
     border: 1px solid var(--gray-200);
     cursor: pointer;
-    transition: all 0.3s;
     text-align: center;
 }
 
 .category-card:hover {
     border-color: var(--orange);
-    transform: translateY(-2px);
 }
 
-.category-card:active {
-    transform: scale(0.95);
-}
-
-.category-icon {
-    width: 4rem;
-    height: 4rem;
-    border-radius: 1rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 0 auto 1rem;
-    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.2);
-}
-
-.category-icon svg {
-    color: var(--white);
-}
-
-.category-card p {
-    color: var(--gray-900);
-    font-weight: 500;
-}
-
-/* ==================== PRIMARY BUTTON ==================== */
-#search-btn,
-.btn-primary {
-    width: 100%;
-    background: var(--orange);
-    color: var(--white);
-    border: none;
-    padding: 1rem;
-    border-radius: 1rem;
-    font-size: 1rem;
-    font-weight: 600;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.75rem;
-    box-shadow: 0 8px 20px rgba(245, 158, 11, 0.35);
-    margin-top: 1rem;
-}
-
-#search-btn:hover,
-.btn-primary:hover {
-    transform: translateY(-1px);
-}
-
-/* ==================== TRUST SECTION ==================== */
-.trust-section {
-    padding: 0 1.5rem 2rem;
-}
-
-.trust-card {
-    background: var(--white);
-    border: 2px solid var(--orange-soft);
-    border-radius: 1rem;
-    padding: 1.5rem;
-    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-}
-
-.trust-title {
-    color: var(--gray-900);
-    text-align: center;
-    margin-bottom: 1rem;
-}
-
-.trust-list {
-    display: flex;
-    flex-direction: column;
-    gap: 0.75rem;
-}
-
-.trust-item {
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-}
-
-.trust-dot {
-    width: 0.5rem;
-    height: 0.5rem;
-    background: var(--orange);
-    border-radius: 9999px;
-    flex-shrink: 0;
-}
-
-.trust-item p {
-    color: var(--gray-700);
-}
-
-/* ==================== SCREEN HEADER ==================== */
-.screen-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 1.5rem;
-    background: var(--white);
-    border-bottom: 1px solid var(--gray-200);
-    position: sticky;
-    top: 0;
-    z-index: 10;
-}
-
-.btn-back {
-    background: none;
-    border: none;
-    color: var(--gray-700);
-    cursor: pointer;
-    padding: 0.5rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: color 0.2s;
-}
-
-.btn-back:hover {
-    color: var(--gray-900);
-}
-
-.btn-back:active {
-    transform: scale(0.9);
-}
-
-.screen-title {
-    color: var(--gray-900);
-    font-size: 1.25rem;
-}
-
-/* ==================== FORMS ==================== */
-.form-group {
-    margin-bottom: 1.5rem;
-}
-
-.form-label {
-    display: block;
-    color: var(--gray-700);
-    font-weight: 500;
-    margin-bottom: 0.5rem;
-}
-
-.form-input,
-.form-select {
-    width: 100%;
-    padding: 1rem;
-    border: 2px solid var(--gray-200);
-    border-radius: 1rem;
-    font-size: 1rem;
-    font-family: inherit;
-    transition: all 0.2s;
-    background: var(--white);
-}
-
-.form-input:focus,
-.form-select:focus {
-    outline: none;
-    border-color: var(--orange);
-}
-
-.form-select {
-    cursor: pointer;
-    appearance: none;
-    background-image: url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1.5L6 6.5L11 1.5' stroke='%23374151' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
-    background-repeat: no-repeat;
-    background-position: right 1rem center;
-    padding-right: 3rem;
-}
-
-/* ==================== ARTISAN LIST ==================== */
-.results-count {
-    color: #6B7280;
-    margin-bottom: 1.5rem;
-}
-
-.artisan-list {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-}
-
-.artisan-card {
-    background: var(--white);
-    border-radius: 1.5rem;
-    padding: 1.25rem;
-    border: 2px solid transparent;
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-    cursor: pointer;
-    transition: all 0.3s;
-}
-
-.artisan-card:hover {
-    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
-    border-color: var(--orange-soft);
-}
-
-.artisan-card:active {
-    transform: scale(0.98);
-}
-
-/* ==================== PROFILE SCREEN ==================== */
-/* ... le reste de ton CSS original reste inchangé ... */
+/* ==================== UTILS ==================== */
+.text-center { text-align: center; }
+.mt-1 { margin-top: 0.25rem; }
+.mt-2 { margin-top: 0.5rem; }
+.mt-3 { margin-top: 1rem; }
+.mb-1 { margin-bottom: 0.25rem; }
+.mb-2 { margin-bottom: 0.5rem; }
+.mb-3 { margin-bottom: 1rem; }
 
 /* ==================== RESPONSIVE ==================== */
 @media (max-width: 428px) {
