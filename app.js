@@ -186,3 +186,36 @@ document.addEventListener('DOMContentLoaded', () => {
     const loginForm = document.querySelector('#artisan-login form');
     if (loginForm) loginForm.addEventListener('submit', loginArtisan);
 });
+// ===============================================
+// 6. GESTION DES BOUTONS DE FILTRE VISUELS
+// ===============================================
+
+// On récupère tous les boutons
+const filterButtons = document.querySelectorAll('.filter-btn');
+
+// Fonction pour réinitialiser les classes actives
+function resetFilterButtons() {
+    filterButtons.forEach(btn => {
+        btn.classList.remove('active-proximity', 'active-price', 'active-rating');
+    });
+}
+
+// Ajout des listeners
+filterButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+        resetFilterButtons(); // désactive tous
+        const type = btn.dataset.filter; // "proximity", "price", "rating"
+
+        // Ajoute la classe active correspondante
+        if (type === 'proximity') btn.classList.add('active-proximity');
+        else if (type === 'price') btn.classList.add('active-price');
+        else if (type === 'rating') btn.classList.add('active-rating');
+
+        // Applique le filtre correspondant
+        const select = document.querySelector(`#search-filter select[name="${type}"]`);
+        if (select) {
+            select.value = select.dataset.value || ''; // ou une valeur par défaut
+            populateArtisanList(); // rafraîchit la liste
+        }
+    });
+});
