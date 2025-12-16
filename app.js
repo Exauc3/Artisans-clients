@@ -1,239 +1,154 @@
-// ===============================================
-// 1. GESTION DES DONNÉES SIMULÉES (Mock Data)
-// ===============================================
+/* =========================
+   NAVIGATION ENTRE ÉCRANS
+   ========================= */
 
-const MOCK_ARTISANS = [
-    { id: 'a1', name: 'Jean Dupont', job: 'Plombier', rating: 4.8, distance: '2.1 km', phone: '+33612345678' },
-    { id: 'a2', name: 'Marie Curie', job: 'Électricienne', rating: 4.5, distance: '500 m', phone: '+33698765432' },
-    // Ajoutez d'autres artisans ici si nécessaire
+const screens = document.querySelectorAll('.screen');
+
+function showScreen(id) {
+  screens.forEach(screen => {
+    screen.classList.toggle('active', screen.id === id);
+    screen.setAttribute(
+      'aria-hidden',
+      screen.id === id ? 'false' : 'true'
+    );
+  });
+}
+
+/* Boutons de navigation */
+document.querySelectorAll('[data-target]').forEach(btn => {
+  btn.addEventListener('click', () => {
+    showScreen(btn.dataset.target);
+  });
+});
+
+/* =========================
+   CATÉGORIES (FIGMA STATES)
+   ========================= */
+
+const categories = document.querySelectorAll('.category');
+
+categories.forEach(category => {
+  category.addEventListener('click', () => {
+    categories.forEach(c => c.classList.remove('active'));
+    category.classList.add('active');
+
+    const selectedCategory = category.dataset.category;
+    filterArtisans(selectedCategory);
+  });
+});
+
+/* =========================
+   FILTRES VISUELS (UI ONLY)
+   ========================= */
+
+document.querySelectorAll('.filter').forEach(filter => {
+  filter.addEventListener('click', () => {
+    filter.classList.toggle('selected');
+  });
+});
+
+/* =========================
+   DONNÉES MOCKÉES
+   ========================= */
+
+const ARTISANS = [
+  {
+    name: 'Jean Mulumba',
+    job: 'Électricien',
+    rating: 4.8,
+    price: '10$',
+    phone: '243900000000',
+    whatsapp: '243900000000'
+  },
+  {
+    name: 'Aline Kabeya',
+    job: 'Plombier',
+    rating: 4.6,
+    price: '12$',
+    phone: '243900000001',
+    whatsapp: '243900000001'
+  }
 ];
 
-let selectedArtisanId = null;
+/* =========================
+   LISTE DES ARTISANS
+   ========================= */
 
-// ===============================================
-// 2. LOGIQUE DE NAVIGATION
-// ===============================================
+const artisanList = document.getElementById('artisan-list');
 
-/**
- * Affiche l'écran spécifié et cache tous les autres.
- * @param {string} screenId - L'ID de l'écran à afficher (ex: 'client-home').
- */
-function navigateTo(screenId) {
-    console.log(`Navigation vers l'écran: ${screenId}`);
-    const screens = document.querySelectorAll('.screen');
-    screens.forEach(screen => {
-        screen.classList.remove('active');
-        screen.setAttribute('aria-hidden', 'true');
-    });
+function renderArtisans(list) {
+  artisanList.innerHTML = '';
 
-    const targetScreen = document.getElementById(screenId);
-    if (targetScreen) {
-        targetScreen.classList.add('active');
-        targetScreen.setAttribute('aria-hidden', 'false');
+  list.forEach(artisan => {
+    const card = document.createElement('article');
+    card.className = 'artisan-card';
 
-        // Gère le bouton retour si un data-target est défini ; ne pas écraser les onclick inline
-        const backButton = targetScreen.querySelector('.btn-back');
-        if (backButton) {
-            const prevScreen = backButton.getAttribute('data-target');
-            if (prevScreen) {
-                backButton.onclick = () => navigateTo(prevScreen);
-            }
-        }
+    const header = document.createElement('header');
+    header.className = 'artisan-header';
 
-        // Si c'est l'écran de profil, on le peuple avec des données
-        if (screenId === 'artisan-profile') {
-            renderArtisanProfile();
-        }
-    } else {
-        console.error(`Erreur: L'écran avec l'ID "${screenId}" est introuvable.`);
-    }
-}
+    const name = document.createElement('h3');
+    name.textContent = artisan.name;
 
-// ===============================================
-// 3. LOGIQUE D'INTERACTIVITÉ ET DE DONNÉES
-// ===============================================
+    const job = document.createElement('span');
+    job.className = 'job';
+    job.textContent = artisan.job;
 
-/**
- * Gère le clic sur les boutons d'action (WhatsApp/Appel)
- * @param {string} actionType - 'whatsapp' ou 'call'
- * @param {string} phoneNumber - Le numéro de téléphone
- */
-function handleAction(actionType, phoneNumber) {
-    if (!phoneNumber) return;
+    header.append(name, job);
 
-    let url;
-    if (actionType === 'whatsapp') {
-        url = `https://wa.me/${phoneNumber.replace(/[\s\(\)-]/g, '')}?text=Bonjour,%20j'ai%20vu%20votre%20profil%20sur%20l'application.`;
-    } else if (actionType === 'call') {
-        url = `tel:${phoneNumber.replace(/[\s\(\)-]/g, '')}`;
-    }
+    const meta = document.createElement('div');
+    meta.className = 'artisan-meta';
 
-    if (url) {
-        console.log(`Ouverture de l'application: ${actionType}`);
-        const target = (window.cordova || window.Cordova) ? '_system' : '_blank';
-        window.open(url, target);
-    }
-}
-
-/**
- * Sélection d'une catégorie depuis les cartes ou la liste.
- * @param {string} category
- */
-function selectCategory(category) {
-    const select = document.getElementById('category-select');
-    if (select) select.value = category;
-
-    // Appliquer le filtre et afficher la liste
-    populateArtisanList({ category });
-    navigateTo('artisan-list');
-}
-
-/**
- * Gère la soumission du formulaire de connexion artisan.
- * @param {Event} event
- */
-function loginArtisan(event) {
-    if (event && event.preventDefault) event.preventDefault();
-    const phoneInput = document.getElementById('phone');
-    const pinInput = document.getElementById('pin');
-
-    const phone = phoneInput ? phoneInput.value.trim() : '';
-    const pin = pinInput ? pinInput.value.trim() : '';
-
-    // Simple validation (mock)
-    if (!phone || !pin) {
-        alert('Veuillez renseigner le numéro de téléphone et le code PIN.');
-        return;
-    }
-
-    console.log(`Tentative de connexion pour ${phone}`);
-    // Ici vous ajouterez la logique d'authentification réelle.
-    // Pour la démo, on considère la connexion réussie.
-    navigateTo('artisan-dashboard');
-}
-
-/**
- * Remplit l'écran de profil de l'artisan avec des données.
- * Si selectedArtisanId est défini, on l'utilise ; sinon on prend le premier mock.
- */
-function renderArtisanProfile() {
-    const profileContainer = document.getElementById('artisan-profile-content');
-    const artisanId = selectedArtisanId || (MOCK_ARTISANS.length ? MOCK_ARTISANS[0].id : null);
-    const artisan = MOCK_ARTISANS.find(a => a.id === artisanId);
-
-    if (!profileContainer) return console.warn('artisan-profile-content introuvable');
-    if (!artisan) {
-        profileContainer.innerHTML = '<p>Artisan non trouvé.</p>';
-        return;
-    }
-
-    // Création d'éléments via DOM (éviter innerHTML non sécurisé)
-    profileContainer.innerHTML = '';
-
-    const nameEl = document.createElement('h2');
-    nameEl.className = 'artisan-name';
-    nameEl.textContent = artisan.name;
-
-    const jobEl = document.createElement('p');
-    jobEl.className = 'artisan-job';
-    jobEl.textContent = artisan.job;
-
-    const ratingEl = document.createElement('div');
-    ratingEl.className = 'artisan-rating';
-    ratingEl.textContent = `${artisan.rating} ⭐`;
+    meta.innerHTML = `
+      <span class="rating">⭐ ${artisan.rating}</span>
+      <span class="price">${artisan.price}</span>
+    `;
 
     const actions = document.createElement('div');
-    actions.className = 'profile-actions';
-
-    const waBtn = document.createElement('button');
-    waBtn.className = 'btn-whatsapp';
-    waBtn.textContent = 'WhatsApp';
-    waBtn.addEventListener('click', () => handleAction('whatsapp', artisan.phone));
+    actions.className = 'artisan-actions';
 
     const callBtn = document.createElement('button');
     callBtn.className = 'btn-call';
     callBtn.textContent = 'Appeler';
-    callBtn.addEventListener('click', () => handleAction('call', artisan.phone));
+    callBtn.onclick = () => {
+      window.location.href = `tel:${artisan.phone}`;
+    };
 
-    actions.appendChild(waBtn);
-    actions.appendChild(callBtn);
+    const whatsappBtn = document.createElement('button');
+    whatsappBtn.className = 'btn-whatsapp';
+    whatsappBtn.textContent = 'WhatsApp';
+    whatsappBtn.onclick = () => {
+      window.location.href = `https://wa.me/${artisan.whatsapp}`;
+    };
 
-    profileContainer.appendChild(nameEl);
-    profileContainer.appendChild(jobEl);
-    profileContainer.appendChild(ratingEl);
-    profileContainer.appendChild(actions);
+    actions.append(callBtn, whatsappBtn);
+
+    card.append(header, meta, actions);
+    artisanList.appendChild(card);
+  });
 }
 
-/**
- * Remplit la liste d'artisans selon un filtre optionnel.
- * @param {{category?: string}} filter
- */
-function populateArtisanList(filter = {}) {
-    const container = document.getElementById('artisan-list-container');
-    const resultsCount = document.querySelector('.results-count');
-    if (!container) return console.warn('artisan-list-container introuvable');
+/* =========================
+   FILTRAGE PAR CATÉGORIE
+   ========================= */
 
-    const categoryFilter = (filter.category || document.getElementById('category-select')?.value || '').toLowerCase();
+function filterArtisans(category) {
+  if (!category || category === 'all') {
+    renderArtisans(ARTISANS);
+    return;
+  }
 
-    const filtered = MOCK_ARTISANS.filter(a => {
-        if (!categoryFilter) return true;
-        return a.job.toLowerCase().includes(categoryFilter.toLowerCase()) || a.job.toLowerCase() === categoryFilter;
-    });
+  const filtered = ARTISANS.filter(
+    artisan => artisan.job === category
+  );
 
-    container.innerHTML = ''; // vider
-
-    filtered.forEach(artisan => {
-        const item = document.createElement('button');
-        item.className = 'artisan-list-item';
-        item.setAttribute('type', 'button');
-        item.dataset.id = artisan.id;
-
-        item.innerHTML = `
-            <div class="artisan-card">
-                <div class="artisan-info">
-                    <h4 class="artisan-name">${artisan.name}</h4>
-                    <p class="artisan-job">${artisan.job} • ${artisan.distance}</p>
-                </div>
-                <div class="artisan-rating">${artisan.rating} ⭐</div>
-            </div>
-        `;
-
-        item.addEventListener('click', () => {
-            selectedArtisanId = artisan.id;
-            renderArtisanProfile();
-            navigateTo('artisan-profile');
-        });
-
-        container.appendChild(item);
-    });
-
-    if (resultsCount) resultsCount.textContent = `${filtered.length} artisan(s) trouvés`;
+  renderArtisans(filtered);
 }
 
-// ===============================================
-// 4. INITIALISATION DE L'APPLICATION
-// ===============================================
+/* =========================
+   INITIALISATION
+   ========================= */
 
 document.addEventListener('DOMContentLoaded', () => {
-    // Démarrer sur l'écran d'accueil client (conforme au HTML)
-    navigateTo('client-home');
-
-    // Remplir la liste d'artisans
-    populateArtisanList();
-
-    // Écouteur pour le select de catégorie (filtre)
-    const categorySelect = document.getElementById('category-select');
-    if (categorySelect) {
-        categorySelect.addEventListener('change', () => {
-            populateArtisanList();
-        });
-    }
-
-    // Attacher la soumission du formulaire artisan si présent
-    const loginForm = document.querySelector('#artisan-login form');
-    if (loginForm) {
-        loginForm.addEventListener('submit', loginArtisan);
-    }
-
-    // Au cas où certaines actions utilisent encore onclick inline dans le HTML, elles resteront fonctionnelles.
+  showScreen('home');
+  renderArtisans(ARTISANS);
 });
