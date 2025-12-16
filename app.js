@@ -1,4 +1,3 @@
-<script>
 // ==================== NAVIGATION ====================
 function navigateTo(screenId) {
     document.querySelectorAll('.screen').forEach(screen => {
@@ -162,4 +161,3 @@ function loginArtisan(e){
 
 // ==================== INITIAL RENDER ====================
 renderArtisans(artisans);
-</script>
