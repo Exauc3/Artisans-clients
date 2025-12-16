@@ -1,195 +1,70 @@
 // =====================================================
-// NAVIGATION
-// =====================================================
-function navigateTo(screenId) {
-    document.querySelectorAll('.screen').forEach(screen => {
-        screen.classList.remove('active');
-    });
-    const target = document.getElementById(screenId);
-    if (target) target.classList.add('active');
-}
-
-// =====================================================
-// FILTER BUTTONS (gestion état actif)
-// =====================================================
-function handleFilterButtons(groupId, activeClass) {
-    const group = document.getElementById(groupId);
-    if (!group) return;
-
-    group.querySelectorAll('.filter-btn').forEach(btn => {
-        btn.addEventListener('click', () => {
-            group.querySelectorAll('.filter-btn').forEach(b =>
-                b.classList.remove(activeClass)
-            );
-            btn.classList.add(activeClass);
-        });
-    });
-}
-
-handleFilterButtons('category-buttons', 'active-proximity');
-handleFilterButtons('distance-buttons', 'active-proximity');
-handleFilterButtons('price-buttons', 'active-price');
-handleFilterButtons('rating-buttons', 'active-rating');
-handleFilterButtons('availability-buttons', 'active-proximity');
-
-// =====================================================
-// CATEGORY SELECTION FROM HOME
-// =====================================================
-function selectCategory(category) {
-    navigateTo('search-filter');
-
-    document
-        .querySelectorAll('#category-buttons .filter-btn')
-        .forEach(btn => {
-            btn.classList.remove('active-proximity');
-            if (btn.dataset.value === category) {
-                btn.classList.add('active-proximity');
-            }
-        });
-}
-
-// =====================================================
-// USERS & SESSION (AUTH)
-// =====================================================
-let users = JSON.parse(localStorage.getItem('users')) || [];
-let currentUser = JSON.parse(localStorage.getItem('currentUser')) || null;
-
-// =====================================================
-// REGISTER
-// =====================================================
-function registerUser(e) {
-    e.preventDefault();
-
-    const name = document.getElementById('register-name').value.trim();
-    const phone = document.getElementById('register-phone').value.trim();
-    const pin = document.getElementById('register-pin').value.trim();
-    const role = document.getElementById('register-role').value;
-
-    if (!name || !phone || !pin) {
-        alert('Tous les champs sont obligatoires');
-        return;
-    }
-
-    if (users.find(u => u.phone === phone)) {
-        alert('Numéro déjà utilisé');
-        return;
-    }
-
-    const user = {
-        id: Date.now(),
-        name,
-        phone,
-        pin,
-        role,
-        profile: {
-            photo: 'https://randomuser.me/api/portraits/lego/1.jpg',
-            category: '',
-            price: '',
-            availability: 'Disponible'
-        }
-    };
-
-    users.push(user);
-    localStorage.setItem('users', JSON.stringify(users));
-    localStorage.setItem('currentUser', JSON.stringify(user));
-
-    navigateTo(role === 'artisan' ? 'artisan-dashboard' : 'client-home');
-}
-
-// =====================================================
-// LOGIN
-// =====================================================
-function loginUser(e) {
-    e.preventDefault();
-
-    const phone = document.getElementById('phone').value.trim();
-    const pin = document.getElementById('pin').value.trim();
-
-    const user = users.find(u => u.phone === phone && u.pin === pin);
-
-    if (!user) {
-        alert('Numéro ou PIN incorrect');
-        return;
-    }
-
-    currentUser = user;
-    localStorage.setItem('currentUser', JSON.stringify(user));
-
-    navigateTo(user.role === 'artisan' ? 'artisan-dashboard' : 'client-home');
-}
-
-// =====================================================
-// LOGOUT
-// =====================================================
-function logout() {
-    localStorage.removeItem('currentUser');
-    currentUser = null;
-    navigateTo('client-home');
-}
-
-// =====================================================
-// ARTISANS (30 PERSONAS)
+// ARTISANS (30 PERSONAS) avec numéro
 // =====================================================
 const artisans = [
-    {id:1,name:"Patrick Mukendi",category:"Électricien",rating:4.8,availability:"Disponible",photo:"https://randomuser.me/api/portraits/men/1.jpg",reviews:12,distance:3,price:"moyen"},
-    {id:2,name:"Jean Kabila",category:"Plombier",rating:4.5,availability:"Occupé",photo:"https://randomuser.me/api/portraits/men/2.jpg",reviews:8,distance:5,price:"budget"},
-    {id:3,name:"Marie Nsimba",category:"Menuisier",rating:4.2,availability:"Disponible",photo:"https://randomuser.me/api/portraits/women/1.jpg",reviews:15,distance:2,price:"premium"},
-    {id:4,name:"Alain Tshibanda",category:"Peintre",rating:3.9,availability:"Disponible",photo:"https://randomuser.me/api/portraits/men/3.jpg",reviews:5,distance:8,price:"budget"},
-    {id:5,name:"Koffi Lenga",category:"Mécanicien",rating:4.7,availability:"Disponible",photo:"https://randomuser.me/api/portraits/men/4.jpg",reviews:10,distance:6,price:"moyen"},
-    {id:6,name:"Lucie Mwamba",category:"Maçon",rating:4.1,availability:"Occupé",photo:"https://randomuser.me/api/portraits/women/2.jpg",reviews:7,distance:9,price:"premium"},
-    // … (les 24 autres sont conservés tels quels dans ta version)
+    {id:1,name:"Patrick Mukendi",phone:"+243970000001",category:"Électricien",rating:4.8,availability:"Disponible",photo:"https://randomuser.me/api/portraits/men/1.jpg",reviews:12,distance:3,price:"moyen"},
+    {id:2,name:"Jean Kabila",phone:"+243970000002",category:"Plombier",rating:4.5,availability:"Occupé",photo:"https://randomuser.me/api/portraits/men/2.jpg",reviews:8,distance:5,price:"budget"},
+    {id:3,name:"Marie Nsimba",phone:"+243970000003",category:"Menuisier",rating:4.2,availability:"Disponible",photo:"https://randomuser.me/api/portraits/women/1.jpg",reviews:15,distance:2,price:"premium"},
+    {id:4,name:"Alain Tshibanda",phone:"+243970000004",category:"Peintre",rating:3.9,availability:"Disponible",photo:"https://randomuser.me/api/portraits/men/3.jpg",reviews:5,distance:8,price:"budget"},
+    {id:5,name:"Koffi Lenga",phone:"+243970000005",category:"Mécanicien",rating:4.7,availability:"Disponible",photo:"https://randomuser.me/api/portraits/men/4.jpg",reviews:10,distance:6,price:"moyen"},
+    {id:6,name:"Lucie Mwamba",phone:"+243970000006",category:"Maçon",rating:4.1,availability:"Occupé",photo:"https://randomuser.me/api/portraits/women/2.jpg",reviews:7,distance:9,price:"premium"},
+    {id:7,name:"Jeanine Bemba",phone:"+243970000007",category:"Couturière",rating:4.3,availability:"Disponible",photo:"https://randomuser.me/api/portraits/women/3.jpg",reviews:6,distance:4,price:"budget"},
+    {id:8,name:"Michel Ndaye",phone:"+243970000008",category:"Coiffeur",rating:4.0,availability:"Disponible",photo:"https://randomuser.me/api/portraits/men/5.jpg",reviews:9,distance:3,price:"moyen"},
+    {id:9,name:"Alice Kitenge",phone:"+243970000009",category:"Esthéticienne",rating:4.5,availability:"Disponible",photo:"https://randomuser.me/api/portraits/women/4.jpg",reviews:11,distance:2,price:"premium"},
+    {id:10,name:"Joseph Kalenga",phone:"+243970000010",category:"Chauffeur",rating:4.2,availability:"Occupé",photo:"https://randomuser.me/api/portraits/men/6.jpg",reviews:5,distance:7,price:"budget"},
+    {id:11,name:"Fatou Banza",phone:"+243970000011",category:"Photographe",rating:4.6,availability:"Disponible",photo:"https://randomuser.me/api/portraits/women/5.jpg",reviews:8,distance:6,price:"moyen"},
+    {id:12,name:"Paul Mbemba",phone:"+243970000012",category:"Jardinier",rating:4.1,availability:"Disponible",photo:"https://randomuser.me/api/portraits/men/7.jpg",reviews:12,distance:5,price:"budget"},
+    {id:13,name:"Sophie Kambale",phone:"+243970000013",category:"Peintre",rating:4.0,availability:"Occupé",photo:"https://randomuser.me/api/portraits/women/6.jpg",reviews:7,distance:8,price:"moyen"},
+    {id:14,name:"Didier Tshisekedi",phone:"+243970000014",category:"Électricien",rating:4.8,availability:"Disponible",photo:"https://randomuser.me/api/portraits/men/8.jpg",reviews:14,distance:4,price:"premium"},
+    {id:15,name:"Claudine Nsimba",phone:"+243970000015",category:"Coiffeuse",rating:4.3,availability:"Disponible",photo:"https://randomuser.me/api/portraits/women/7.jpg",reviews:10,distance:3,price:"budget"},
+    {id:16,name:"Henri Lumbala",phone:"+243970000016",category:"Mécanicien",rating:4.2,availability:"Disponible",photo:"https://randomuser.me/api/portraits/men/9.jpg",reviews:9,distance:6,price:"moyen"},
+    {id:17,name:"Emilie Mukendi",phone:"+243970000017",category:"Esthéticienne",rating:4.5,availability:"Disponible",photo:"https://randomuser.me/api/portraits/women/8.jpg",reviews:12,distance:2,price:"premium"},
+    {id:18,name:"Jean-Pierre Kabila",phone:"+243970000018",category:"Menuisier",rating:4.1,availability:"Occupé",photo:"https://randomuser.me/api/portraits/men/10.jpg",reviews:5,distance:7,price:"budget"},
+    {id:19,name:"Claire Banza",phone:"+243970000019",category:"Couturière",rating:4.0,availability:"Disponible",photo:"https://randomuser.me/api/portraits/women/9.jpg",reviews:8,distance:3,price:"moyen"},
+    {id:20,name:"Lucien Kalenga",phone:"+243970000020",category:"Peintre",rating:4.3,availability:"Disponible",photo:"https://randomuser.me/api/portraits/men/11.jpg",reviews:11,distance:5,price:"premium"},
+    {id:21,name:"Annie Ndaye",phone:"+243970000021",category:"Jardinier",rating:4.2,availability:"Occupé",photo:"https://randomuser.me/api/portraits/women/10.jpg",reviews:6,distance:9,price:"budget"},
+    {id:22,name:"Marc Kitenge",phone:"+243970000022",category:"Chauffeur",rating:4.5,availability:"Disponible",photo:"https://randomuser.me/api/portraits/men/12.jpg",reviews:9,distance:4,price:"moyen"},
+    {id:23,name:"Patricia Mbemba",phone:"+243970000023",category:"Photographe",rating:4.6,availability:"Disponible",photo:"https://randomuser.me/api/portraits/women/11.jpg",reviews:10,distance:6,price:"premium"},
+    {id:24,name:"Fabrice Lumbala",phone:"+243970000024",category:"Électricien",rating:4.8,availability:"Occupé",photo:"https://randomuser.me/api/portraits/men/13.jpg",reviews:13,distance:3,price:"premium"},
+    {id:25,name:"Sarah Kambale",phone:"+243970000025",category:"Coiffeuse",rating:4.2,availability:"Disponible",photo:"https://randomuser.me/api/portraits/women/12.jpg",reviews:7,distance:2,price:"moyen"},
+    {id:26,name:"Daniel Tshibanda",phone:"+243970000026",category:"Mécanicien",rating:4.1,availability:"Disponible",photo:"https://randomuser.me/api/portraits/men/14.jpg",reviews:9,distance:5,price:"budget"},
+    {id:27,name:"Jeanne Nsimba",phone:"+243970000027",category:"Menuisier",rating:4.3,availability:"Disponible",photo:"https://randomuser.me/api/portraits/women/13.jpg",reviews:11,distance:3,price:"premium"},
+    {id:28,name:"Albert Mukendi",phone:"+243970000028",category:"Peintre",rating:4.0,availability:"Occupé",photo:"https://randomuser.me/api/portraits/men/15.jpg",reviews:6,distance:8,price:"budget"},
+    {id:29,name:"Marie-Ange Bemba",phone:"+243970000029",category:"Couturière",rating:4.5,availability:"Disponible",photo:"https://randomuser.me/api/portraits/women/14.jpg",reviews:10,distance:2,price:"moyen"},
+    {id:30,name:"Jean-Luc Kalenga",phone:"+243970000030",category:"Chauffeur",rating:4.2,availability:"Disponible",photo:"https://randomuser.me/api/portraits/men/16.jpg",reviews:8,distance:4,price:"premium"}
 ];
 
 // =====================================================
-// RENDER STARS
+// PROFILE VIEW avec WhatsApp et Appel
 // =====================================================
-function renderStars(rating) {
-    let html = '';
-    for (let i = 1; i <= 5; i++) {
-        html += `<span class="star ${rating >= i ? '' : 'empty'}">★</span>`;
-    }
-    return html;
-}
-
-// =====================================================
-// RENDER ARTISANS LIST
-// =====================================================
-function renderArtisans(list) {
-    const container = document.getElementById('artisan-list-container');
+function showProfile(artisan) {
+    navigateTo('artisan-profile');
+    const container = document.getElementById('artisan-profile-content');
     if (!container) return;
 
-    container.innerHTML = '';
+    container.innerHTML = `
+        <img src="${artisan.photo}" class="profile-photo-large">
+        <h2>${artisan.name}</h2>
+        <p>${artisan.category}</p>
+        <div>${renderStars(artisan.rating)}</div>
+        <p>${artisan.distance} km • ${artisan.price}</p>
+        <button class="btn-whatsapp">WhatsApp</button>
+        <button class="btn-call">Appeler</button>
+    `;
 
-    list.forEach(a => {
-        const card = document.createElement('div');
-        card.className = 'artisan-card';
+    // === Bouton WhatsApp ===
+    container.querySelector('.btn-whatsapp')?.addEventListener('click', () => {
+        window.open(`https://wa.me/${artisan.phone}`, '_blank');
+    });
 
-        card.innerHTML = `
-            <div class="artisan-header">
-                <img src="${a.photo}" class="artisan-photo">
-                <div>
-                    <p class="artisan-name">${a.name}</p>
-                    <p class="artisan-category">${a.category}</p>
-                    <div class="artisan-rating">
-                        ${renderStars(a.rating)}
-                        <span>${a.rating.toFixed(1)} (${a.reviews})</span>
-                    </div>
-                </div>
-            </div>
-            <div class="artisan-badges">
-                <span class="badge">${a.distance} km</span>
-                <span class="badge">${a.price}</span>
-                <span class="badge">${a.availability}</span>
-            </div>
-        `;
-
-        card.addEventListener('click', () => showProfile(a));
-        container.appendChild(card);
+    // === Bouton Appeler ===
+    container.querySelector('.btn-call')?.addEventListener('click', () => {
+        window.location.href = `tel:${artisan.phone}`;
     });
 }
 
 // =====================================================
-// FILTER ACTION
+// FILTER ACTION avec compteur
 // =====================================================
 document.getElementById('search-btn')?.addEventListener('click', () => {
     const category = document.querySelector('#category-buttons .active-proximity')?.dataset.value;
@@ -207,46 +82,8 @@ document.getElementById('search-btn')?.addEventListener('click', () => {
 
     renderArtisans(filtered);
     navigateTo('artisan-list');
+
+    // Afficher le compteur exact
+    const counter = document.getElementById('artisan-count');
+    if (counter) counter.textContent = `${filtered.length} résultat(s) trouvé(s)`;
 });
-
-// =====================================================
-// PROFILE VIEW
-// =====================================================
-function showProfile(artisan) {
-    navigateTo('artisan-profile');
-    const container = document.getElementById('artisan-profile-content');
-    if (!container) return;
-
-    container.innerHTML = `
-        <img src="${artisan.photo}" class="profile-photo-large">
-        <h2>${artisan.name}</h2>
-        <p>${artisan.category}</p>
-        <div>${renderStars(artisan.rating)}</div>
-        <p>${artisan.distance} km • ${artisan.price}</p>
-        <button class="btn-whatsapp">WhatsApp</button>
-        <button class="btn-call">Appeler</button>
-    `;
-}
-
-// =====================================================
-// INIT
-// =====================================================
-document.addEventListener('DOMContentLoaded', () => {
-    renderArtisans(artisans);
-
-    if (currentUser) {
-        navigateTo(currentUser.role === 'artisan'
-            ? 'artisan-dashboard'
-            : 'client-home'
-        );
-    } else {
-        navigateTo('client-home');
-    }
-});
-if ('serviceWorker' in navigator) {
-  window.addEventListener('load', () => {
-    navigator.serviceWorker.register('/sw.js')
-      .then(reg => console.log('Service Worker registered:', reg))
-      .catch(err => console.log('Service Worker failed:', err));
-  });
-}
