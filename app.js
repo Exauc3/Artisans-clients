@@ -2,50 +2,40 @@
    NAVIGATION ENTRE ÉCRANS
    ========================= */
 
-const screens = document.querySelectorAll('.screen');
+function navigateTo(screenId) {
+  const screens = document.querySelectorAll('.screen');
+  if (!screens.length) return;
 
-function showScreen(id) {
+  let found = false;
+
   screens.forEach(screen => {
-    screen.classList.toggle('active', screen.id === id);
-    screen.setAttribute(
-      'aria-hidden',
-      screen.id === id ? 'false' : 'true'
-    );
+    const isActive = screen.id === screenId;
+    screen.classList.toggle('active', isActive);
+    screen.setAttribute('aria-hidden', isActive ? 'false' : 'true');
+    if (isActive) found = true;
   });
+
+  // Sécurité : si l'écran n'existe pas, on affiche l'accueil client
+  if (!found) {
+    const fallback = document.getElementById('client-home');
+    if (fallback) {
+      fallback.classList.add('active');
+      fallback.setAttribute('aria-hidden', 'false');
+    }
+  }
 }
 
-/* Boutons de navigation */
-document.querySelectorAll('[data-target]').forEach(btn => {
-  btn.addEventListener('click', () => {
-    showScreen(btn.dataset.target);
-  });
-});
-
 /* =========================
-   CATÉGORIES (FIGMA STATES)
+   CATÉGORIES (HOME)
    ========================= */
 
-const categories = document.querySelectorAll('.category');
-
-categories.forEach(category => {
-  category.addEventListener('click', () => {
-    categories.forEach(c => c.classList.remove('active'));
-    category.classList.add('active');
-
-    const selectedCategory = category.dataset.category;
-    filterArtisans(selectedCategory);
-  });
-});
-
-/* =========================
-   FILTRES VISUELS (UI ONLY)
-   ========================= */
-
-document.querySelectorAll('.filter').forEach(filter => {
-  filter.addEventListener('click', () => {
-    filter.classList.toggle('selected');
-  });
-});
+function selectCategory(category) {
+  const select = document.getElementById('category-select');
+  if (select) {
+    select.value = category;
+  }
+  navigateTo('search-filter');
+}
 
 /* =========================
    DONNÉES MOCKÉES
@@ -53,95 +43,110 @@ document.querySelectorAll('.filter').forEach(filter => {
 
 const ARTISANS = [
   {
-    name: 'Jean Mulumba',
+    id: 1,
+    name: 'Patrick Mukendi',
     job: 'Électricien',
     rating: 4.8,
-    price: '10$',
+    price: '$$',
     phone: '243900000000',
-    whatsapp: '243900000000'
+    whatsapp: '243900000000',
+    availability: 'Disponible'
   },
   {
+    id: 2,
     name: 'Aline Kabeya',
     job: 'Plombier',
     rating: 4.6,
-    price: '12$',
+    price: '$',
     phone: '243900000001',
-    whatsapp: '243900000001'
+    whatsapp: '243900000001',
+    availability: 'Disponible'
+  },
+  {
+    id: 3,
+    name: 'Jonathan Ilunga',
+    job: 'Menuisier',
+    rating: 4.4,
+    price: '$$',
+    phone: '243900000002',
+    whatsapp: '243900000002',
+    availability: 'Occupé'
   }
 ];
 
 /* =========================
-   LISTE DES ARTISANS
+   RECHERCHE & LISTE
    ========================= */
 
-const artisanList = document.getElementById('artisan-list');
+function renderArtisanList() {
+  const container = document.getElementById('artisan-list-container');
+  if (!container) return;
 
-function renderArtisans(list) {
-  artisanList.innerHTML = '';
+  container.innerHTML = '';
 
-  list.forEach(artisan => {
-    const card = document.createElement('article');
+  const category = document.getElementById('category-select')?.value || '';
+
+  const results = ARTISANS.filter(a =>
+    !category || a.job === category
+  );
+
+  document.querySelector('.results-count').textContent =
+    `${results.length} artisans trouvés`;
+
+  results.forEach(artisan => {
+    const card = document.createElement('div');
     card.className = 'artisan-card';
+    card.onclick = () => openArtisanProfile(artisan.id);
 
-    const header = document.createElement('header');
-    header.className = 'artisan-header';
-
-    const name = document.createElement('h3');
-    name.textContent = artisan.name;
-
-    const job = document.createElement('span');
-    job.className = 'job';
-    job.textContent = artisan.job;
-
-    header.append(name, job);
-
-    const meta = document.createElement('div');
-    meta.className = 'artisan-meta';
-
-    meta.innerHTML = `
-      <span class="rating">⭐ ${artisan.rating}</span>
-      <span class="price">${artisan.price}</span>
+    card.innerHTML = `
+      <div class="artisan-info">
+        <h3>${artisan.name}</h3>
+        <p>${artisan.job}</p>
+        <div class="artisan-rating">⭐ ${artisan.rating}</div>
+      </div>
+      <div class="artisan-status ${artisan.availability === 'Disponible' ? 'available' : 'busy'}">
+        ${artisan.availability}
+      </div>
     `;
 
-    const actions = document.createElement('div');
-    actions.className = 'artisan-actions';
-
-    const callBtn = document.createElement('button');
-    callBtn.className = 'btn-call';
-    callBtn.textContent = 'Appeler';
-    callBtn.onclick = () => {
-      window.location.href = `tel:${artisan.phone}`;
-    };
-
-    const whatsappBtn = document.createElement('button');
-    whatsappBtn.className = 'btn-whatsapp';
-    whatsappBtn.textContent = 'WhatsApp';
-    whatsappBtn.onclick = () => {
-      window.location.href = `https://wa.me/${artisan.whatsapp}`;
-    };
-
-    actions.append(callBtn, whatsappBtn);
-
-    card.append(header, meta, actions);
-    artisanList.appendChild(card);
+    container.appendChild(card);
   });
+
+  navigateTo('artisan-list');
 }
 
 /* =========================
-   FILTRAGE PAR CATÉGORIE
+   PROFIL ARTISAN
    ========================= */
 
-function filterArtisans(category) {
-  if (!category || category === 'all') {
-    renderArtisans(ARTISANS);
-    return;
-  }
+function openArtisanProfile(id) {
+  const artisan = ARTISANS.find(a => a.id === id);
+  if (!artisan) return;
 
-  const filtered = ARTISANS.filter(
-    artisan => artisan.job === category
-  );
+  const container = document.getElementById('artisan-profile-content');
+  if (!container) return;
 
-  renderArtisans(filtered);
+  container.innerHTML = `
+    <h3>${artisan.name}</h3>
+    <p class="profile-job">${artisan.job}</p>
+    <p class="profile-rating">⭐ ${artisan.rating}</p>
+
+    <div class="profile-actions">
+      <a href="tel:${artisan.phone}" class="btn-primary">Appeler</a>
+      <a href="https://wa.me/${artisan.whatsapp}" class="btn-secondary">WhatsApp</a>
+    </div>
+  `;
+
+  navigateTo('artisan-profile');
+}
+
+/* =========================
+   LOGIN ARTISAN (MOCK)
+   ========================= */
+
+function loginArtisan(event) {
+  event.preventDefault();
+  navigateTo('artisan-dashboard');
 }
 
 /* =========================
@@ -149,6 +154,13 @@ function filterArtisans(category) {
    ========================= */
 
 document.addEventListener('DOMContentLoaded', () => {
-  showScreen('home');
-  renderArtisans(ARTISANS);
+  navigateTo('client-home');
+
+  // Bouton rechercher (écran filtres)
+  const searchBtn = document.querySelector(
+    '#search-filter .btn-primary'
+  );
+  if (searchBtn) {
+    searchBtn.onclick = renderArtisanList;
+  }
 });
