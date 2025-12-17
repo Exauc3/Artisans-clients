@@ -5,7 +5,7 @@ const assetsToCache = [
   '/style.css',
   '/app.js',
   '/manifest.json',
-  '/icon-192.png',
+  '/artisan.photo.jpg',
   '/icon-512.png'
 ];
 
